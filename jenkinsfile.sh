@@ -18,7 +18,7 @@ pipeline {
         stage("foo") {
             steps {
                 script {
-                    env.FILENAME = sh 'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD'
+                    env.FILENAME = sh 'echo "Hi"'
                 }
                 echo "${env.FILENAME}"
             }

@@ -18,9 +18,7 @@ pipeline {
 
 @NonCPS
 def loop_with_preceding_sh(list) {
-    sh "echo Going to echo a list"
-    sh "echo ${list}"
     list.each { item ->
-        sh "echo Hello ${item}"
+        echo "Hello ${item}"
     }
 }

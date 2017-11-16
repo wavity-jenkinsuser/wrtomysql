@@ -21,7 +21,7 @@ def loop_with_preceding_sh(list) {
     array = list.split()
     for (int i = 0; i < array.size(); i++) {
         message = sh(returnStdout: true, script: "git log --format=%B -n 1 ${array[i]}")
-        sh "echo Working for ${array[i]}""
+        sh "echo Working for ${array[i]}"
         if (message =~ /(.*)running(.*)/) {
             echo "Good news"
         } else {

@@ -1,6 +1,9 @@
 #!/usr/bin/env groovy
 pipeline {
     agent any
+    environment {
+        COMMIT_ARRAY = 'Hi'
+    }
     stages {
         stage('Build') {
             steps {
@@ -8,7 +11,7 @@ pipeline {
                 sh 'echo "My var GIT_PREVIOUS_SUCCESSFUL_COMMIT is: ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}"'
                 sh 'echo "My var GIT_COMMIT is: ${GIT_COMMIT}"'
                 script {
-                    env.COMMIT_ARRAY= sh 'git rev-list ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD'
+                    env.COMMIT_ARRAY= sh 'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD'
                 }
                 echo "${env.COMMIT_ARRAY}"
                 sh 'echo "Test: ${COMMIT_ARRAY[@]}"'

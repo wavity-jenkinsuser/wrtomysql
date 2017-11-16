@@ -11,7 +11,7 @@ pipeline {
                 sh 'echo "My var GIT_PREVIOUS_SUCCESSFUL_COMMIT is: ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}"'
                 sh 'echo "My var GIT_COMMIT is: ${GIT_COMMIT}"'
                 script {
-                    env.COMMIT_ARRAY= sh 'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD'
+                    COMMIT_ARRAY= sh 'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD'
                 }
                 echo "${env.COMMIT_ARRAY}"
                 sh 'echo "Test: ${COMMIT_ARRAY[@]}"'

@@ -7,12 +7,13 @@ pipeline {
     stages {
         stage('Test message') {
             steps {
+                sh 'printenv'
                 script {
                     FILENAME = sh(returnStdout: true, script:'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD')
                     BADLIST = loop_with_preceding_sh(FILENAME)
                     BOOL = loop_bad_message(BADLIST)
                     if (BOOL) {
-                        echo "hi ${BOOL}"
+                        mail bcc: 'energyneo0@gmail.com', body: 'hi', cc: 'energyneo0@gmail.com', from: '', replyTo: '', subject: 'hi', to: 'energyneo0@gmail.com'
                     }
                 }
             }

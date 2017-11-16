@@ -18,9 +18,9 @@ pipeline {
         stage("foo") {
             steps {
                 script {
-                    env.FILENAME = sh(returnStdout: True, script:'echo "Hi"')
+                    FILENAME = sh(returnStdout: true, script:'echo "Hi"')
                 }
-                echo "${env.FILENAME}"
+                echo "${FILENAME}"
             }
         }
     }

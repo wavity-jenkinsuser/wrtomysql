@@ -1,5 +1,4 @@
 #!/usr/bin/env groovy
-# hey!
 pipeline {
     agent any
 

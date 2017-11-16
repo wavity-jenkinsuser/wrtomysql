@@ -33,7 +33,7 @@ def loop_with_preceding_sh(list) {
     return badMessage
 }
 
-def loop_with_preceding_sh(list) {
+def loop_bad_message(list) {
     for (int i = 0; i < list.size(); i++) {
         echo "hi Bad Message ${list[i]}"
     }

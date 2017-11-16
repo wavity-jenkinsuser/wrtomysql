@@ -12,8 +12,7 @@ pipeline {
                 sh 'echo "My var GIT_COMMIT is: ${GIT_COMMIT}"'
                 sh 'COMMIT_ARRAY=$(git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD)'
                 echo "${COMMIT_ARRAY}"
-                sh 'echo "Test: ${COMMIT_ARRAY}"'
-                mail bcc: 'someone@example.com', body: 'SOME-TEXT', cc: 'someone@example.com', from: '', replyTo: '', subject: 'DETECT ERROR', to: 'someone@example.com'
+                sh 'echo "Test: ${COMMIT_ARRAY}"
             }
         }
         stage("foo") {

@@ -9,7 +9,7 @@ pipeline {
                 echo "${GIT_PREVIOUS_SUCCESSFUL_COMMIT}" && \
                 echo "${GIT_COMMIT}" && \
                 echo "GIT LOG:" && \
-                git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD'
+                git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD | git log --format=%B -n 1'
             }
         }
     }

@@ -18,7 +18,8 @@ pipeline {
 
 @NonCPS
 def loop_with_preceding_sh(list) {
-    list.each { item ->
+    array = list.split()
+    array.each { item ->
         echo "Hello ${item}"
     }
 }

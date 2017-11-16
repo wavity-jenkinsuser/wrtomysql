@@ -18,7 +18,7 @@ pipeline {
         stage("foo") {
             steps {
                 script {
-                    env.FILENAME = readFile 'jenkinsfile.sh'
+                    env.FILENAME = sh 'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD'
                 }
                 echo "${env.FILENAME}"
             }

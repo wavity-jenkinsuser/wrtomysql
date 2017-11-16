@@ -4,7 +4,8 @@ regexp_message () {
   echo "Hello, i'm regexp function"
   echo "My message is: $1"
   echo "My regexp string is: $2"
-  if [[ $1 =~ $2]]; then
+  if [[ $1 =~ $2]]
+  then
   echo "All good"
   else
   echo "Not good"

@@ -13,7 +13,8 @@ pipeline {
                     BADLIST = loop_with_preceding_sh(FILENAME)
                     BOOL = loop_bad_message(BADLIST)
                     if (BOOL) {
-                        mail bcc: 'energyneo0@gmail.com', body: 'hi', cc: 'energyneo0@gmail.com', from: '', replyTo: '', subject: 'hi', to: 'energyneo0@gmail.com'
+                        echo "hi ${BADLIST}"
+                        mail bcc: 'energyneo0@gmail.com', body: 'Hello, we have problems: ${BADLIST}', cc: 'energyneo0@gmail.com', from: '', replyTo: '', subject: 'hi', to: 'energyneo0@gmail.com'
                     }
                 }
             }
@@ -31,7 +32,7 @@ def loop_with_preceding_sh(list) {
             echo "Good news"
         } else {
             echo "Bad news"
-            badMessage.push(array[i])
+            badMessage.push("Commit ${array[i]} in branch ${GIT_BRANCH} contains a bad message: ${message}")
         }
     }
     return badMessage

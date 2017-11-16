@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'ls -la ${WORKSPACE} && ${WORKSPACE}/remessage.sh'
+                sh 'chmod +x ${WORKSPACE}/remessage.sh && ${WORKSPACE}/remessage.sh'
             }
         }
     }

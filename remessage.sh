@@ -18,7 +18,7 @@ if [ "${commit}" != "${GIT_PREVIOUS_SUCCESSFUL_COMMIT}" ]
 then
 echo "Let's check commit ${commit}"
 MESSAGE=$(git log --format=%B -n 1 ${commit})
-regexp_message ${MESSAGE} string
+regexp_message "${MESSAGE}" "string"
 fi
 done
 

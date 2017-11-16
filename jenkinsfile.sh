@@ -22,7 +22,9 @@ def loop_with_preceding_sh(list) {
     array.each { item ->
         Pattern pattern = Pattern.compile(".*:\\s(\\w+)")
         Matcher matcher = pattern.matcher(item)
-        if not (matcher.matches()) {
+        if (matcher.matches()) {
+            echo "Good news"
+        } else {
             echo "Bad news"
         }
     }

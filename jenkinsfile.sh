@@ -17,7 +17,7 @@ pipeline {
     }
 }
 
-def badMessage = []
+def badMessage = [:]
 def loop_with_preceding_sh(list) {
     array = list.split()
     for (int i = 0; i < array.size(); i++) {

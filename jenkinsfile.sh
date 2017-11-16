@@ -9,8 +9,9 @@ pipeline {
             steps {
                 script {
                     FILENAME = sh(returnStdout: true, script:'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD')
-                    BAD = loop_with_preceding_sh(FILENAME)
-                    loop_bad_message(BAD)
+                    BADLIST = loop_with_preceding_sh(FILENAME)
+                    BOOL = loop_bad_message(BADLIST)
+                    echo "hi ${BOOL}"
                 }
             }
         }
@@ -34,7 +35,9 @@ def loop_with_preceding_sh(list) {
 }
 
 def loop_bad_message(list) {
-    for (int i = 0; i < list.size(); i++) {
-        echo "hi Bad Message ${list[i]}"
+    if (0 < list.size()) { 
+        return true
+    } else {
+        return false
     }
 }

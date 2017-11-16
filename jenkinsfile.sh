@@ -2,7 +2,7 @@
 pipeline {
     agent any
     environment {
-        COMMIT_ARRAY = 'Hi'
+        COMMIT_ARRAY = sh 'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD'
     }
     stages {
         stage('Build') {

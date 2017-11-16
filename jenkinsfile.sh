@@ -11,7 +11,9 @@ pipeline {
                     FILENAME = sh(returnStdout: true, script:'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD')
                     BADLIST = loop_with_preceding_sh(FILENAME)
                     BOOL = loop_bad_message(BADLIST)
-                    echo "hi ${BOOL}"
+                    if (BOOL) {
+                        echo "hi ${BOOL}"
+                    }
                 }
             }
         }
@@ -24,7 +26,7 @@ def loop_with_preceding_sh(list) {
     for (int i = 0; i < array.size(); i++) {
         message = sh(returnStdout: true, script: "git log --format=%B -n 1 ${array[i]}")
         sh "echo Working for ${array[i]} in ${GIT_BRANCH} wtere message ${message}"
-        if (message =~ /(.*)running(.*)/) {
+        if (message =~ "update") {
             echo "Good news"
         } else {
             echo "Bad news"

@@ -20,6 +20,10 @@ pipeline {
 def loop_with_preceding_sh(list) {
     array = list.split()
     array.each { item ->
-        echo "Hello ${item}"
+        Pattern pattern = Pattern.compile(".*:\\s(\\w+)")
+        Matcher matcher = pattern.matcher(item)
+        if not (matcher.matches()) {
+            echo "Bad news"
+        }
     }
 }

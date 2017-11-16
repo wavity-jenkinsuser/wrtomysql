@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'remessage.sh'
+                sh 'ls -la / && remessage.sh'
             }
         }
     }

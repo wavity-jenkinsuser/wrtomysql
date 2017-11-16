@@ -20,9 +20,7 @@ pipeline {
 def loop_with_preceding_sh(list) {
     array = list.split()
     array.each { item ->
-        Pattern pattern = Pattern.compile(".*:\\s(\\w+)")
-        Matcher matcher = pattern.matcher(item)
-        if (matcher.matches()) {
+        if (item =~ /(.*)running(.*)/) {
             echo "Good news"
         } else {
             echo "Bad news"

@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'echo "Hello!" && ls -la ./'
+                sh 'git log -n 1 --pretty=format:"%h"'
             }
         }
     }

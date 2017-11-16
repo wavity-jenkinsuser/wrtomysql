@@ -10,7 +10,7 @@ pipeline {
                 script {
                     FILENAME = sh(returnStdout: true, script:'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD')
                 }
-                loop_with_preceding_sh(FILENAME)
+                loop_with_preceding_sh(${FILENAME})
             }
         }
     }

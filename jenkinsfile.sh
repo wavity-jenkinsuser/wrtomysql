@@ -18,7 +18,7 @@ pipeline {
 }
 
 def loop_with_preceding_sh(list) {
-    def badMessage = [:]
+    def badMessage = []
     array = list.split()
     for (int i = 0; i < array.size(); i++) {
         message = sh(returnStdout: true, script: "git log --format=%B -n 1 ${array[i]}")

@@ -18,7 +18,7 @@ pipeline {
         stage("foo") {
             steps {
                 script {
-                    FILENAME = sh(returnStdout: true, script:'echo "Hi"')
+                    FILENAME = sh(returnStdout: true, script:'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD')
                 }
                 echo "${FILENAME}"
             }

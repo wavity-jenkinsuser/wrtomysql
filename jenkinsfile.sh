@@ -20,8 +20,7 @@ pipeline {
 def loop_with_preceding_sh(list) {
     array = list.split()
     array.each { item ->
-        message = sh(returnStdout: true, script: 'git log --format=%B -n 1 ${item}')
-        echo "Work from ${message}"
+        message = sh(returnStdout: true, script:'git log --format=%B -n 1 ${item}')
         if (message =~ /(.*)running(.*)/) {
             echo "Good news"
         } else {

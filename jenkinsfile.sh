@@ -10,7 +10,7 @@ pipeline {
                 script {
                     env.COMMIT_ARRAY= sh 'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD'
                 }
-                echo "${env.COMMIT_ARRAY[@]}"
+                echo "${env.COMMIT_ARRAY}"
                 sh 'echo "Test: ${COMMIT_ARRAY[@]}"'
                 mail bcc: 'someone@example.com', body: 'SOME-TEXT', cc: 'someone@example.com', from: '', replyTo: '', subject: 'DETECT ERROR', to: 'someone@example.com'
             }

@@ -5,23 +5,21 @@ pipeline {
         COMMIT_ARRAY = sh 'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD'
     }
     stages {
-        stage('Build') {
-            steps {
-                sh 'echo "Hello, i\'m temp script."'
-                sh 'echo "My var GIT_PREVIOUS_SUCCESSFUL_COMMIT is: ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}"'
-                sh 'echo "My var GIT_COMMIT is: ${GIT_COMMIT}"'
-                sh 'COMMIT_ARRAY=$(git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD)'
-                echo "${COMMIT_ARRAY}"
-                sh 'echo "Test: ${COMMIT_ARRAY}"'
-            }
-        }
-        stage("foo") {
+        stage('Test message') {
             steps {
                 script {
                     FILENAME = sh(returnStdout: true, script:'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD')
                 }
-                echo "${FILENAME}"
+                loop_with_preceding_sh(FILENAME)
             }
         }
+    }
+}
+
+@NonCPS
+def loop_with_preceding_sh(list) {
+    sh "echo Going to echo a list"
+    list.each { item ->
+        sh "echo Hello ${item}"
     }
 }

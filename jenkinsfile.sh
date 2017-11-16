@@ -13,6 +13,7 @@ pipeline {
                     BOOL = loop_bad_message(BADLIST)
                     if (BOOL) {
                         echo "hi ${BOOL}"
+                        echo "hi ${BOOL}"
                     }
                 }
             }

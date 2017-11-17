@@ -49,7 +49,7 @@ def loop_mail_send(list) {
         autor = sh(returnStdout: true, script: "git log --format=%ae -n 1 ${list[i]}")
         autort = autor.trim()
         message = sh(returnStdout: true, script: "git log --format=%B -n 1 ${list[i]}")
-        echo "Hello, ${autort}!  We have problems in commit ${list[i]} with a message ${message}"
-        mail bcc: "${autort}", body: "Hello, ${autort}! We have problems in commit ${list[i]} with a message ${message}", cc: "${autort}", from: '', replyTo: '', subject: 'Bad message in your commit ${list[i]}', to: "${autort}"
+        echo "Hello, ${autort}!  We have problems in commit ${list[i]} with a message: ${message}"
+        mail bcc: "${autort}", body: "Hello, ${autort}! We have problems in commit ${list[i]} with a message: ${message}", cc: "${autort}", from: '', replyTo: '', subject: 'Bad message in your commit ${list[i]}', to: "${autort}"
     }
 }

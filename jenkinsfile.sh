@@ -26,7 +26,7 @@ def loop_with_preceding_sh(list) {
     for (int i = 0; i < array.size(); i++) {
         message = sh(returnStdout: true, script: "git log --format=%B -n 1 ${array[i]}")
         sh "echo Working for ${array[i]} in ${GIT_BRANCH} wtere message ${message}"
-        if (message =~ /update/) {
+        if (message =~ /^WCP-[\d]{4}.*/) {
             echo "Good news"
         } else {
             echo "Bad news"
@@ -50,6 +50,9 @@ def loop_mail_send(list) {
         autort = autor.trim()
         message = sh(returnStdout: true, script: "git log --format=%B -n 1 ${list[i]}")
         echo "Hello, ${autort}!  We have problems in commit ${list[i]} with a message: ${message}"
+        adminmail = "example@domain.com"
+        echo "Admin is ${adminmail}"
+//      mail bcc: "${adminmail}", body: "Hello, ${adminmail}"! One man ${autort} left a bad commit ${list[i]} with a message: ${message}", cc: "${adminmail}", from: '', replyTo: '', subject: 'Bad message in commit ${list[i]}', to: "${adminmail}"  
         mail bcc: "${autort}", body: "Hello, ${autort}! We have problems in commit ${list[i]} with a message: ${message}", cc: "${autort}", from: '', replyTo: '', subject: 'Bad message in your commit ${list[i]}', to: "${autort}"
     }
 }

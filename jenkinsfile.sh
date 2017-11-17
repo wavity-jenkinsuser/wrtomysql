@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 node {
-    checkout([class: 'GitSCM'])
+    checkout([class: 'GitSCM', branches: [[name: '*/*']]])
 }
 pipeline {
     agent any

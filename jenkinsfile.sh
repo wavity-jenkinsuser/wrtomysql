@@ -1,4 +1,7 @@
 #!/usr/bin/env groovy
+node {
+    checkout scm
+}
 pipeline {
     agent any
     environment {

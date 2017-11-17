@@ -23,6 +23,7 @@ pipeline {
     }
 }
 
+def commitHash = []
 def loop_with_preceding_sh(list) {
     def badMessage = []
     array = list.split()
@@ -34,6 +35,7 @@ def loop_with_preceding_sh(list) {
         } else {
             echo "Bad news"
             badMessage.push("Commit ${array[i]} in branch ${GIT_BRANCH} contains a bad message: ${message}")
+            commitHash.push(array[i])
         }
     }
     return badMessage
@@ -49,7 +51,7 @@ def loop_bad_message(list) {
 
 def loop_mail_send(list) {
     for (int i = 0; i < list.size(); i++) {
-        autor = sh(returnStdout: true, script: "git log --format=%ae -n 1 ${list[i]}")
+        autor = sh(returnStdout: true, script: "git log --format=%ae -n 1 ${commitHash[i]}")
         echo "Autor: ${autor}"
     }
 }

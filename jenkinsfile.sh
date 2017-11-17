@@ -1,7 +1,8 @@
 #!/usr/bin/env groovy
 node {
-    echo "Hi."
-    checkout scm
+    checkout scm {
+        doGenerateSubmoduleConfigurations = false
+    }
 }
 pipeline {
     agent any

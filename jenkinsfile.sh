@@ -14,6 +14,7 @@ pipeline {
                     BOOL = loop_bad_message(BADLIST)
                     if (BOOL) {
                         echo "hi ${BADLIST}"
+                        loop_mail_send(BADLIST)
                         mail bcc: 'energyneo0@gmail.com', body: 'Hello, we have problems: ${BADLIST}', cc: 'energyneo0@gmail.com', from: '', replyTo: '', subject: 'hi', to: 'energyneo0@gmail.com'
                     }
                 }
@@ -43,5 +44,12 @@ def loop_bad_message(list) {
         return true
     } else {
         return false
+    }
+}
+
+def loop_mail_send(list) {
+    for (int i = 0; i < list.size(); i++) {
+        autor = sh(returnStdout: true, script: "git log --format=%ae -n 1 ${list[i]}")
+        echo "Autor: ${autor}"
     }
 }

@@ -1,8 +1,6 @@
 #!/usr/bin/env groovy
-node {
-    checkout scm
-}
 pipeline {
+    checkout scm
     agent any
     environment {
         COMMIT_ARRAY = sh 'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD'

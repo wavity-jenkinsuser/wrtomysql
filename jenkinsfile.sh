@@ -27,9 +27,9 @@ def loop_with_preceding_sh(list) {
         message = sh(returnStdout: true, script: "git log --format=%B -n 1 ${array[i]}")
         sh "echo Working for ${array[i]} in ${GIT_BRANCH} wtere message ${message}"
         if (message =~ /^WCP-[\d]{4}.*/) {
-            echo "Good news"
+//            echo "Good news"
         } else {
-            echo "Bad news"
+//            echo "Bad news"
             badMessage.push("${array[i]}")
         }
     }

@@ -16,9 +16,12 @@ pipeline {
         stage('Test message') {
             steps {
                 script {
-                    COMMITLIST = sh(returnStdout: true, script:'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD')
-                    BADLIST = loop_with_preceding_sh(COMMITLIST)
-                    BOOL = loop_bad_message(BADLIST)
+                    echo "${GIT_PREVIOUS_SUCCESSFUL_COMMIT}"
+                    if (GIT_PREVIOUS_SUCCESSFUL_COMMIT) {
+                        COMMITLIST = sh(returnStdout: true, script:'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD')
+                        BADLIST = loop_with_preceding_sh(COMMITLIST)
+                        BOOL = loop_bad_message(BADLIST)
+                    }
                     if (BOOL) {
                         loop_mail_send(BADLIST)
                     }
@@ -33,7 +36,7 @@ def loop_with_preceding_sh(list) {
     array = list.split()
     for (int i = 0; i < array.size(); i++) {
         message = sh(returnStdout: true, script: "git log --format=%B -n 1 ${array[i]}")
-        sh "echo Working for ${array[i]} in ${GIT_BRANCH} wtere message ${message}"
+        sh "echo Working for ${array[i]} in ${GIT_BRANCH} wtere message ${message}" 
         if (message =~ /^WCP-[\d]{4}.*/) {
 //          echo "Good news, everyone"
         } else {

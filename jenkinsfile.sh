@@ -20,9 +20,9 @@ pipeline {
                         COMMITLIST = sh(returnStdout: true, script:'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD')
                         BADLIST = loop_with_preceding_sh(COMMITLIST)
                         BOOL = loop_bad_message(BADLIST)
-                    }
-                    if (BOOL) {
-                        loop_mail_send(BADLIST)
+                        if (BOOL) {
+                            loop_mail_send(BADLIST)
+                        }
                     }
                 }
             }

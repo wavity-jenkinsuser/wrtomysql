@@ -1,19 +1,18 @@
 #!/usr/bin/env groovy
-node {
-    checkout([$class: 'GitSCM', 
-              branches: [[name: '*/*']], 
-              doGenerateSubmoduleConfigurations: false, 
-              extensions: [], 
-              submoduleCfg: [], 
-              userRemoteConfigs: [[credentialsId: '8a5ae250-42f8-482a-ba21-af74658e34c2', url: 'https://github.com/Energy1190/wrtomysql']]
-             ])
-}
 pipeline {
     agent any
-    environment {
-        COMMIT_ARRAY = sh 'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD'
-    }
     stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM', 
+                branches: [[name: '*/*']], 
+                doGenerateSubmoduleConfigurations: false, 
+                extensions: [], 
+                submoduleCfg: [], 
+                userRemoteConfigs: [[credentialsId: '8a5ae250-42f8-482a-ba21-af74658e34c2', url: 'https://github.com/Energy1190/wrtomysql']]
+                ])
+            }
+        }
         stage('Test message') {
             steps {
                 script {

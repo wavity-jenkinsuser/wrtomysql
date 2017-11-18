@@ -16,7 +16,6 @@ pipeline {
         stage('Test message') {
             steps {
                 script {
-                    echo "${GIT_PREVIOUS_SUCCESSFUL_COMMIT}"
                     if (GIT_PREVIOUS_SUCCESSFUL_COMMIT) {
                         COMMITLIST = sh(returnStdout: true, script:'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD')
                         BADLIST = loop_with_preceding_sh(COMMITLIST)

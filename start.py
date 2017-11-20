@@ -47,6 +47,7 @@ def find_and_read_file():
         if x:
             name = x.group()
             obj = name.split(sep='.')[1]
+            print('Working on file /data/logs/{}'.format(name))
             try:
                 f = open('/data/log/{}'.format(name, 'r'))
                 success = main(f.readlines(), obj)

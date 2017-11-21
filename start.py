@@ -10,17 +10,21 @@ class Array_vals():
     log_dict_keys = []
 
 def create_table(obj):
-    conn = MySQLdb.connect(user='root', passwd='1vHzGPl6jcSeN3zL0I1N', host='172.16.9.71', port=3306)
+    print('Creating table.')
+    conn = MySQLdb.connect(user='monitor', passwd='monitor', host='172.16.9.71', port=3306)
     c = conn.cursor()
     c.execute(obj)
     c.close()
+    conn.commit()
     conn.close()
 
 def insert_table(obj, obj_list):
-    conn = MySQLdb.connect(user='root', passwd='1vHzGPl6jcSeN3zL0I1N', host='172.16.9.71', port=3306)
+    print('Insert in table.')
+    conn = MySQLdb.connect(user='monitor', passwd='monitor', host='172.16.9.71', port=3306)
     c = conn.cursor()
     c.executemany(obj, obj_list)
     c.close()
+    conn.commit()
     conn.close()
 
 def parse(obj, class_obj=None):
@@ -54,10 +58,12 @@ def find_and_read_file():
             finally:
                 f.close()
             if success:
+                print('Success. Remove /data/logs/{}'.format(name))
                 os.remove('/data/log/{}'.format(name))
 
 
 def main(file_reader, obj):
+    print('Start main. Parsing')
     c = Array_vals()
     y = ((i.split(sep='{')[0].split(sep='\t')[0], i.split(sep='{')[0].split(sep='\t')[1], i.split(sep='{')[-1].replace('}', '')[:-2]) for i in file_reader)
     y = map(lambda x: parse(x, class_obj=c), y)
@@ -77,9 +83,11 @@ def main(file_reader, obj):
 
     create = 'CREATE TABLE IF NOT EXIST router_log_{} {}'.format(obj, values_name)
     insert = 'INSERT INTO router_log_{} {} VALUES ({})'.format(obj, val_name, s)
-
+    
+    print('Start DB works. Status: {}. Num objects: {}'.format(str(check), str(len(y))))
     create_table(create)
     insert_table(insert, y)
+    print('Done main.')
     return True
 
 if __name__ == '__main__':

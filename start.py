@@ -59,7 +59,6 @@ def find_and_read_file():
 
 def main(file_reader, obj):
     c = Array_vals()
-    x = open('temp.log', 'r')
     y = ((i.split(sep='{')[0].split(sep='\t')[0], i.split(sep='{')[0].split(sep='\t')[1], i.split(sep='{')[-1].replace('}', '')[:-2]) for i in file_reader)
     y = map(lambda x: parse(x, class_obj=c), y)
     y = filter(None, y)

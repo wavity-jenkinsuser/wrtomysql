@@ -16,7 +16,6 @@ class Count():
     count_alter = 0
 
 def work_table(obj):
-    print('Creating table.')
     conn = MySQLdb.connect(user='monitor', passwd='monitor', host='172.16.9.71', port=3306)
     c = conn.cursor()
     c.execute(obj)

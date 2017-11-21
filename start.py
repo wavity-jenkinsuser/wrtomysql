@@ -54,8 +54,11 @@ def find_and_read_file():
             obj = name.split(sep='.')[1]
             print('Working on file /data/logs/{}'.format(name))
             try:
-                f = open('/data/log/{}'.format(name, 'r', encoding="latin1"))
-                success = main(f.readlines(), obj)
+                #f = open('/data/log/{}'.format(name, 'r', encoding="latin1"))
+                #success = main(f.readlines(), obj)
+                with open('/data/log/{}'.format(name, 'r', encoding="latin1")) as fileobject:
+                   for line in fileobject:
+                      print(line)
             except:
                 print('--- Error. ---')
                 print(format_exc())

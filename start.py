@@ -2,6 +2,7 @@ import os
 import re
 import MySQLdb
 import datetime
+from traceback import format_exc
 
 class Array_vals():
     log_message_list = []
@@ -55,7 +56,11 @@ def find_and_read_file():
             try:
                 f = open('/data/log/{}'.format(name, 'r', encoding="latin1"))
                 success = main(f.readlines(), obj)
+            except:
+                print('--- Error. ---')
+                print(format_exc())
             finally:
+                print('Done. Close file /data/logs/{}'.format(name))
                 f.close()
             if success:
                 print('Success. Remove /data/logs/{}'.format(name))

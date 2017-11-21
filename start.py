@@ -29,7 +29,7 @@ def parse(obj, class_obj=None):
     log_time = int(datetime.datetime.strptime(obj[0][:-3] + '00', '%Y-%m-%dT%H:%M:%S%z').timestamp())
     log_sourse = obj[1].split(sep='.')[0]
     if log_sourse not in class_obj.log_source_list: class_obj.log_source_list.append(log_sourse)
-    if log_sourse != 'system': return None
+    if log_sourse != 'system': return (None, None)
     log_level = obj[1].split(sep='.')[-1]
     if log_level not in class_obj.log_level_list: class_obj.log_level_list.append(log_level)
     log_message = obj[2].split(sep=':')[1][1:]
@@ -69,10 +69,14 @@ def find_and_read_file():
 def main(file_reader, obj, env, counts):
     c = env
     cc = counts
-
+    cc.count =+1
+    
     y = (file_reader.split(sep='{')[0].split(sep='\t')[0], file_reader.split(sep='{')[0].split(sep='\t')[1],
           file_reader.split(sep='{')[-1].replace('}', '')[:-2])
     y, n_col = parse(y, class_obj=c)
+
+    if not y and not n_col:
+        return False
 
     x = [i for i in c.log_dict_keys]
 
@@ -80,18 +84,15 @@ def main(file_reader, obj, env, counts):
     values_name = '(timestamp INT, level VARCHAR(50), ' + gen_filds + ')'
 
     create = 'CREATE TABLE IF NOT EXIST router_log_{} {}'.format(obj, values_name)
-    insert = 'INSERT INTO router_log_{} {} VALUES ({})'.format(obj, y.keys(), y.values())
-    
-    print(y.keys(), y.values())
-    return True
-    
+    insert = 'INSERT INTO router_log_{} ({}) VALUES ({})'.format(obj, ', '.join(y.keys()), ', '.join(y.values()))
+
     if not cc.count_create:
         work_table(create)
         cc.count_create +=1
 
     if len(n_col):
         for i in n_col:
-            alter = 'ALTER TABLE router_log_{} ADD COLUMN {} VARCHAR(50) DEFAULT NULL'.format(obj, i)
+            alter = 'ALTER TABLE router_log_{} ADD COLUMN `{}` VARCHAR(50) DEFAULT NULL'.format(obj, i)
             work_table(alter)
             cc.count_alter +=1
 

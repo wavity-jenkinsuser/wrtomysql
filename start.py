@@ -67,7 +67,7 @@ def find_and_read_file():
                 f.close()
             if success:
                 print('Success. Remove /data/logs/{}'.format(name))
-                os.remove('/data/log/{}'.format(name))
+                #os.remove('/data/log/{}'.format(name))
 
 
 def main(file_reader, obj):

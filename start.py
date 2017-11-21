@@ -2,7 +2,6 @@ import os
 import re
 import MySQLdb
 import datetime
-from traceback import format_exc
 
 class Array_vals():
     log_message_list = []
@@ -10,7 +9,13 @@ class Array_vals():
     log_source_list = []
     log_dict_keys = []
 
-def create_table(obj):
+class Count():
+    count = 0
+    count_create = 0
+    count_insert = 0
+    count_alter = 0
+
+def work_table(obj):
     print('Creating table.')
     conn = MySQLdb.connect(user='monitor', passwd='monitor', host='172.16.9.71', port=3306)
     c = conn.cursor()
@@ -19,16 +24,8 @@ def create_table(obj):
     conn.commit()
     conn.close()
 
-def insert_table(obj, obj_list):
-    print('Insert in table.')
-    conn = MySQLdb.connect(user='monitor', passwd='monitor', host='172.16.9.71', port=3306)
-    c = conn.cursor()
-    c.executemany(obj, obj_list)
-    c.close()
-    conn.commit()
-    conn.close()
-
 def parse(obj, class_obj=None):
+    new_col_list = []
     log_time = int(datetime.datetime.strptime(obj[0][:-3] + '00', '%Y-%m-%dT%H:%M:%S%z').timestamp())
     log_sourse = obj[1].split(sep='.')[0]
     if log_sourse not in class_obj.log_source_list: class_obj.log_source_list.append(log_sourse)
@@ -38,65 +35,71 @@ def parse(obj, class_obj=None):
     log_message = obj[2].split(sep=':')[1][1:]
     if log_message not in class_obj.log_message_list: class_obj.log_message_list.append(log_message)
     log_dict_temp = obj[2].split(sep=':')[2]
-    log_dict = {i.split(sep='=')[0]: str((bool(len(i.split(sep='=')) - 1) and i.split(sep='=')[1])) for i in log_dict_temp.split(sep=' ') if i}
-    [class_obj.log_dict_keys.append(i) for i in log_dict if i not in class_obj.log_dict_keys]
+    log_dict = {i.split(sep='=')[0]: str((bool(len(i.split(sep='=')) - 1) and i.split(sep='=')[1])) for i in
+                log_dict_temp.split(sep=' ') if i}
+    [(class_obj.log_dict_keys.append(i), new_col_list.append(i)) for i in log_dict if i not in class_obj.log_dict_keys]
     log_dict['message'] = log_message
     log_dict['level'] = log_level
     log_dict['timestamp'] = log_time
-    return log_dict
+    return (log_dict, new_col_list)
+
 
 def find_and_read_file():
     success = False
+    c = Array_vals()
     for i in os.listdir('/data/log'):
         x = re.match(r'base\.\d{8}\.log', i)
+        cc = Count()
         if x:
             name = x.group()
             obj = name.split(sep='.')[1]
             print('Working on file /data/logs/{}'.format(name))
-            try:
-                #f = open('/data/log/{}'.format(name, 'r', encoding="latin1"))
-                #success = main(f.readlines(), obj)
-                with open('/data/log/{}'.format(name, 'r', encoding="latin1")) as fileobject:
-                   for line in fileobject:
-                      print(line)
-            except:
-                print('--- Error. ---')
-                print(format_exc())
-            finally:
-                print('Done. Close file /data/logs/{}'.format(name))
-                f.close()
+            with open('/data/log/{}'.format(name, 'r', encoding="latin1")) as fileobject:
+                for line in fileobject:
+                    success = main(line, obj, c, cc)
             if success:
+                print('ALL: ', cc.count)
+                print('CREATE: ', cc.count_create)
+                print('INSERT: ', cc.count_insert)
+                print('ALTER: ', cc.count_alter)
                 print('Success. Remove /data/logs/{}'.format(name))
-                #os.remove('/data/log/{}'.format(name))
+                # os.remove('/data/log/{}'.format(name))
 
 
-def main(file_reader, obj):
-    print('Start main. Parsing')
-    c = Array_vals()
-    y = ((i.split(sep='{')[0].split(sep='\t')[0], i.split(sep='{')[0].split(sep='\t')[1], i.split(sep='{')[-1].replace('}', '')[:-2]) for i in file_reader)
-    y = map(lambda x: parse(x, class_obj=c), y)
-    y = filter(None, y)
-    y = list(y)
+def main(file_reader, obj, env, counts):
+    c = env
+    cc = counts
 
-    check = all(y)
+    y = (file_reader.split(sep='{')[0].split(sep='\t')[0], file_reader.split(sep='{')[0].split(sep='\t')[1],
+          file_reader.split(sep='{')[-1].replace('}', '')[:-2])
+    y, n_col = parse(y, class_obj=c)
+
     x = [i for i in c.log_dict_keys]
-    val_name = ['timestamp', 'level']
-    val_name = val_name + x
-    num = len(val_name)
 
     gen_filds = ' '.join([i + ' VARCHAR(50) NULL DEFAULT '',' for i in x][:-1])
     values_name = '(timestamp INT, level VARCHAR(50), ' + gen_filds + ')'
 
-    s = ('%s, ' * num)[:-2]
-
     create = 'CREATE TABLE IF NOT EXIST router_log_{} {}'.format(obj, values_name)
-    insert = 'INSERT INTO router_log_{} {} VALUES ({})'.format(obj, val_name, s)
+    insert = 'INSERT INTO router_log_{} {} VALUES ({})'.format(obj, y.keys(), y.values())
     
-    print('Start DB works. Status: {}. Num objects: {}'.format(str(check), str(len(y))))
-    create_table(create)
-    insert_table(insert, y)
-    print('Done main.')
+    print(y.keys(), y.values())
     return True
+    
+    if not cc.count_create:
+        work_table(create)
+        cc.count_create +=1
+
+    if len(n_col):
+        for i in n_col:
+            alter = 'ALTER TABLE router_log_{} ADD COLUMN {} VARCHAR(50) DEFAULT NULL'.format(obj, i)
+            work_table(alter)
+            cc.count_alter +=1
+
+    work_table(insert,)
+    cc.count_insert +=1
+
+    return True
+
 
 if __name__ == '__main__':
     find_and_read_file()

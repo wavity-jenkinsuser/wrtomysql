@@ -30,6 +30,12 @@ def work_table(obj):
 
 
 def parse(obj, class_obj=None):
+    def regexp(string):
+        x = re.findall(r'=\"([^\=]*)\"', string)
+        for i in x:
+            if i: string = string.replace(i, i.replace(' ', '_'))
+        return string
+    
     new_col_list = []
     log_time = int(datetime.datetime.strptime(obj[0][:-3] + '00', '%Y-%m-%dT%H:%M:%S%z').timestamp())
     log_sourse = obj[1].split(sep='.')[0]
@@ -40,7 +46,11 @@ def parse(obj, class_obj=None):
     log_message = obj[2].split(sep=':')[1][1:]
     if log_message not in class_obj.log_message_list: class_obj.log_message_list.append(log_message)
     log_dict_temp = obj[2].split(sep=':')[2]
-    log_dict = {i.split(sep='=')[0]: str((bool(len(i.split(sep='=')) - 1) and bool(len(i.split(sep='=')[1])) and i.split(sep='=')[1].replace('\"', 'SLASH').replace('\\"', 'SLASH').replace('\\', 'SLASH'))) for i in
+    log_dict_temp = regexp(log_dict_temp)
+    
+    log_dict = {i.split(sep='=')[0]: str((bool(len(i.split(sep='=')) - 1) and bool(len(i.split(sep='=')[1])) and
+                                          i.split(sep='=')[1].replace('\"', 'SLASH').replace('\\"', 'SLASH').replace(
+                                              '\\', 'SLASH'))) for i in
                 log_dict_temp.split(sep=' ') if i}
     [(class_obj.log_dict_keys.append(i), new_col_list.append(i)) for i in log_dict if i not in class_obj.log_dict_keys]
     log_dict['message'] = log_message
@@ -90,7 +100,7 @@ def main(file_reader, obj, env, counts):
 
     create = 'CREATE TABLE IF NOT EXISTS router_log_{} {}'.format(obj, values_name)
     insert = 'INSERT INTO router_log_{} ({}) VALUES ("{}")'.format(obj, ', '.join(y.keys()),
-                                                                 '", "'.join(map(str, y.values())))
+                                                                   '", "'.join(map(str, y.values())))
 
     if not cc.count_create:
         work_table(create)
@@ -111,7 +121,7 @@ def main(file_reader, obj, env, counts):
         print('RAW: ', file_reader)
         print('DICT: ', y)
         raise
-        
+
     cc.count_insert += 1
 
     return True

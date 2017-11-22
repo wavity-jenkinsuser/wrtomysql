@@ -40,7 +40,7 @@ def parse(obj, class_obj=None):
     log_message = obj[2].split(sep=':')[1][1:]
     if log_message not in class_obj.log_message_list: class_obj.log_message_list.append(log_message)
     log_dict_temp = obj[2].split(sep=':')[2]
-    log_dict = {i.split(sep='=')[0]: str((bool(len(i.split(sep='=')) - 1) and i.split(sep='=')[1])) for i in
+    log_dict = {i.split(sep='=')[0]: str((bool(len(i.split(sep='=')) - 1) and i.split(sep='=')[1].replace('\"', 'SLASH').replace('\\"', 'SLASH'))) for i in
                 log_dict_temp.split(sep=' ') if i}
     [(class_obj.log_dict_keys.append(i), new_col_list.append(i)) for i in log_dict if i not in class_obj.log_dict_keys]
     log_dict['message'] = log_message

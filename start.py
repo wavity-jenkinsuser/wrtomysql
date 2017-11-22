@@ -82,7 +82,7 @@ def main(file_reader, obj, env, counts):
     gen_filds = ' '.join([i + ' VARCHAR(50) NULL DEFAULT '',' for i in x][:-1])
     values_name = '(timestamp INT, level VARCHAR(50), ' + gen_filds + ')'
 
-    create = 'CREATE TABLE IF NOT EXIST router_log_{} {}'.format(obj, values_name)
+    create = 'CREATE TABLE IF NOT EXISTS router_log_{} {}'.format(obj, values_name)
     insert = 'INSERT INTO router_log_{} ({}) VALUES ({})'.format(obj, ', '.join(y.keys()), ', '.join(map(str,y.values())))
 
     if not cc.count_create:

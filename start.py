@@ -1,7 +1,9 @@
 import os
 import re
+import _mysql_exceptions
 import MySQLdb
 import datetime
+
 
 class Array_vals():
     log_message_list = []
@@ -9,11 +11,13 @@ class Array_vals():
     log_source_list = []
     log_dict_keys = []
 
+
 class Count():
     count = 0
     count_create = 0
     count_insert = 0
     count_alter = 0
+
 
 def work_table(obj):
     print(obj)
@@ -23,6 +27,7 @@ def work_table(obj):
     c.close()
     conn.commit()
     conn.close()
+
 
 def parse(obj, class_obj=None):
     new_col_list = []
@@ -69,10 +74,10 @@ def find_and_read_file():
 def main(file_reader, obj, env, counts):
     c = env
     cc = counts
-    cc.count =+1
-    
+    cc.count = +1
+
     y = (file_reader.split(sep='{')[0].split(sep='\t')[0], file_reader.split(sep='{')[0].split(sep='\t')[1],
-          file_reader.split(sep='{')[-1].replace('}', '')[:-2])
+         file_reader.split(sep='{')[-1].replace('}', '')[:-2])
     y, n_col = parse(y, class_obj=c)
 
     if not y and not n_col:
@@ -84,20 +89,25 @@ def main(file_reader, obj, env, counts):
     values_name = '(timestamp INT, level VARCHAR(50), ' + gen_filds + ')'
 
     create = 'CREATE TABLE IF NOT EXISTS router_log_{} {}'.format(obj, values_name)
-    insert = 'INSERT INTO router_log_{} ({}) VALUES ({})'.format(obj, ', '.join(y.keys()), ', '.join(map(str,y.values())))
+    insert = 'INSERT INTO router_log_{} ({}) VALUES ({})'.format(obj, ', '.join(y.keys()),
+                                                                 ', '.join(map(str, y.values())))
 
     if not cc.count_create:
         work_table(create)
-        cc.count_create +=1
+        cc.count_create += 1
 
     if len(n_col):
         for i in n_col:
-            alter = "ALTER TABLE router_log_{} ADD COLUMN `{}` VARCHAR(50) DEFAULT 'None'".format(obj, i)
-            work_table(alter)
-            cc.count_alter +=1
+            try:
+                alter = "ALTER TABLE router_log_{} ADD COLUMN `{}` VARCHAR(50) DEFAULT 'None'".format(obj, i)
+                work_table(alter)
+                cc.count_alter += 1
+            except _mysql_exceptions.OperationalError:
+                print('ALTER Fail')
+                print(alter)
 
-    work_table(insert,)
-    cc.count_insert +=1
+    work_table(insert, )
+    cc.count_insert += 1
 
     return True
 

@@ -91,7 +91,7 @@ def main(file_reader, obj, env, counts):
 
     if len(n_col):
         for i in n_col:
-            alter = 'ALTER TABLE router_log_{} ADD COLUMN `{}` VARCHAR(50) DEFAULT NULL'.format(obj, i)
+            alter = "ALTER TABLE router_log_{} ADD COLUMN `{}` VARCHAR(50) DEFAULT 'None'".format(obj, i)
             work_table(alter)
             cc.count_alter +=1
 

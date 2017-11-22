@@ -90,7 +90,7 @@ def main(file_reader, obj, env, counts):
 
     create = 'CREATE TABLE IF NOT EXISTS router_log_{} {}'.format(obj, values_name)
     insert = 'INSERT INTO router_log_{} ({}) VALUES ({})'.format(obj, ', '.join(y.keys()),
-                                                                 ', '.join(map(str, y.values())))
+                                                                 '", "'.join(map(str, y.values())))
 
     if not cc.count_create:
         work_table(create)

@@ -43,7 +43,6 @@ def parse(obj, class_obj=None):
     log_dict = {i.split(sep='=')[0]: str((bool(len(i.split(sep='=')) - 1) and i.split(sep='=')[1])) for i in
                 log_dict_temp.split(sep=' ') if i}
     [(class_obj.log_dict_keys.append(i), new_col_list.append(i)) for i in log_dict if i not in class_obj.log_dict_keys]
-    (class_obj.log_dict_keys.append('message'), new_col_list.append('message'))
     log_dict['message'] = log_message
     log_dict['level'] = log_level
     log_dict['timestamp'] = log_time
@@ -87,7 +86,7 @@ def main(file_reader, obj, env, counts):
     x = [i for i in c.log_dict_keys]
 
     gen_filds = ' '.join([i + " VARCHAR(50) DEFAULT 'None'," for i in x])[:-1]
-    values_name = '(timestamp INT, level VARCHAR(50), ' + gen_filds + ')'
+    values_name = '(timestamp INT, level VARCHAR(50), message VARCHAR(50), ' + gen_filds + ')'
 
     create = 'CREATE TABLE IF NOT EXISTS router_log_{} {}'.format(obj, values_name)
     insert = 'INSERT INTO router_log_{} ({}) VALUES ("{}")'.format(obj, ', '.join(y.keys()),

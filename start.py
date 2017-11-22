@@ -105,8 +105,13 @@ def main(file_reader, obj, env, counts):
             except _mysql_exceptions.OperationalError:
                 print('ALTER Fail')
                 print(alter)
-
-    work_table(insert, )
+    try:
+        work_table(insert)
+    except:
+        print('RAW: ', file_reader)
+        print('DICT: ', y)
+        raise
+        
     cc.count_insert += 1
 
     return True

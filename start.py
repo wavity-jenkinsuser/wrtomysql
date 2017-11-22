@@ -79,7 +79,7 @@ def main(file_reader, obj, env, counts):
 
     x = [i for i in c.log_dict_keys]
 
-    gen_filds = ' '.join([i + ' VARCHAR(50) NULL DEFAULT '',' for i in x][:-1])
+    gen_filds = ' '.join([i + " VARCHAR(50) DEFAULT 'None'," for i in x][:-1])
     values_name = '(timestamp INT, level VARCHAR(50), ' + gen_filds + ')'
 
     create = 'CREATE TABLE IF NOT EXISTS router_log_{} {}'.format(obj, values_name)

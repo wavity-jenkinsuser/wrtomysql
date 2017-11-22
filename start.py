@@ -43,6 +43,7 @@ def parse(obj, class_obj=None):
     log_dict = {i.split(sep='=')[0]: str((bool(len(i.split(sep='=')) - 1) and i.split(sep='=')[1])) for i in
                 log_dict_temp.split(sep=' ') if i}
     [(class_obj.log_dict_keys.append(i), new_col_list.append(i)) for i in log_dict if i not in class_obj.log_dict_keys]
+    (class_obj.log_dict_keys.append('message'), new_col_list.append('message'))
     log_dict['message'] = log_message
     log_dict['level'] = log_level
     log_dict['timestamp'] = log_time

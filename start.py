@@ -33,9 +33,9 @@ def parse(obj, class_obj=None):
     def regexp(string):
         x = re.findall(r'=\\\"([^\=\"]*)\\\"', string)
         for i in x:
-            if i: string = string.replace(i, i.replace(' ', '_'))
-                
-        print('REGEXP: ' string)
+            if i: 
+                string = string.replace(i, i.replace(' ', '_'))                
+                print('REGEXP: ' string)
         return string
     
     new_col_list = []

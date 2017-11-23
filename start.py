@@ -35,7 +35,7 @@ def parse(obj, class_obj=None):
         for i in x:
             if i: 
                 string = string.replace(i, i.replace(' ', '_'))                
-                print('REGEXP: ' string)
+                print('REGEXP: ', string)
         return string
     
     new_col_list = []

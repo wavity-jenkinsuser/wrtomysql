@@ -31,11 +31,14 @@ def work_table(obj):
 
 def parse(obj, class_obj=None):
     def regexp(string):
-        x = re.findall('=([^\=]*)"', string)
+        x = re.findall(r'=([^\=]*)"', string)
+        y = re.findall(r'=([^\=]*)', string)
+        print('REGEXP: ', string)
+        print(x)
+        print('RAW ALL: ', y)
         for i in x:
             if i: 
                 string = string.replace(i, i.replace(' ', '_'))                
-                print('REGEXP: ', string)
         return string
     
     new_col_list = []

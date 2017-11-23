@@ -31,7 +31,7 @@ def work_table(obj):
 
 def parse(obj, class_obj=None):
     def regexp(string):
-        x = re.findall('=\\\"([^\=\"]*)', string)
+        x = re.findall('=([^\=]*)"', string)
         for i in x:
             if i: 
                 string = string.replace(i, i.replace(' ', '_'))                

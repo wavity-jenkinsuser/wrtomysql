@@ -31,7 +31,7 @@ def work_table(obj):
 
 def parse(obj, class_obj=None):
     def regexp(string):
-        x = re.findall(r'=([^\=]*\"{1})\"*', string)
+        x = re.findall(r'=([^\=\"]*\"{1}[^\"\=]*\"{1})', string)
         y = re.findall(r'=([^\=]*)', string)
         print('REGEXP: ', string)
         print(x)

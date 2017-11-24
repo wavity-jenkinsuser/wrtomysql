@@ -31,15 +31,15 @@ def work_table(obj):
 
 def parse(obj, class_obj=None):
     def regexp(string):
-        x = re.findall(r'=([^\=\"]*\"{1}[^\"\=]*\"{1})', string)
-        y = re.findall(r'=([^\=]*)', string)
-        print('REGEXP: ', string)
-        print(x)
-        print('RAW ALL: ', y)
-        for i in x:
-            if i: 
-                string = string.replace(i, i.replace(' ', '_'))                
-        return string
+        result = []
+        flag=False
+        if '"' in string[:-3]:
+            for i in string:
+                if i == '"' and not flag: flag=True
+                elif i == '"' and flag: flag=False 
+                if flag and i == ' ': i = '_'
+                result.append(i)             
+        return (len(result) and ''.join(result) or string)
     
     new_col_list = []
     log_time = int(datetime.datetime.strptime(obj[0][:-3] + '00', '%Y-%m-%dT%H:%M:%S%z').timestamp())

@@ -11,7 +11,10 @@ class Array_vals():
     log_source_list = []
     log_dict_keys = []
 
-
+class Error():
+    count_error = 0
+    error_list = []
+    
 class Count():
     count = 0
     count_create = 0
@@ -67,6 +70,7 @@ def parse(obj, class_obj=None):
 def find_and_read_file():
     success = False
     c = Array_vals()
+    er = Error()
     for i in os.listdir('/data/log'):
         x = re.match(r'base\.\d{8}\.log', i)
         cc = Count()
@@ -74,16 +78,24 @@ def find_and_read_file():
             name = x.group()
             obj = name.split(sep='.')[1]
             print('Working on file /data/logs/{}'.format(name))
-            with open('/data/log/{}'.format(name, 'r', encoding="latin1")) as fileobject:
-                for line in fileobject:
-                    success = main(line, obj, c, cc)
-            if success:
+            try:
+                with open('/data/log/{}'.format(name, 'r', encoding="latin1")) as fileobject:
+                    for line in fileobject:
+                        success = main(line, obj, c, cc)
+            except:
+                print ('Error in file /data/logs/{}'.format(name))
+                er.count_error += 1
+                er.error_list.append(name)
+            if success and name not in er.error_list:
                 print('ALL: ', cc.count)
                 print('CREATE: ', cc.count_create)
                 print('INSERT: ', cc.count_insert)
                 print('ALTER: ', cc.count_alter)
                 print('Success. Remove /data/logs/{}'.format(name))
                 # os.remove('/data/log/{}'.format(name))
+    if er.count_error:
+        print('ERROR: ', er.count_error)
+        print('ERROR IN: ', ', '.join(er.error_list))
 
 
 def main(file_reader, obj, env, counts):

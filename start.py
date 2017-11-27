@@ -23,7 +23,6 @@ class Count():
 
 
 def work_table(obj):
-    print(obj)
     conn = MySQLdb.connect(user='monitor', passwd='monitor', db='monitor', host='172.16.9.71', port=3306)
     c = conn.cursor()
     c.execute(obj)

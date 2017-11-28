@@ -3,7 +3,7 @@ import re
 import _mysql_exceptions
 import MySQLdb
 import datetime
-
+from traceback import format_exc
 
 class Array_vals():
     log_message_list = []
@@ -80,11 +80,18 @@ def find_and_read_file():
             try:
                 with open('/data/log/{}'.format(name), 'r', encoding="latin1") as fileobject:
                     for line in fileobject:
-                        success = main(line, obj, c, cc)
+                        try:
+                            success = main(line, obj, c, cc)
+                        except:
+                            print ('Error in file /data/logs/{}'.format(name))
+                            er.count_error += 1
+                            if name not in er.error_list: er.error_list.append(name)
+                            print(format_exc())
             except:
                 print ('Error in file /data/logs/{}'.format(name))
                 er.count_error += 1
-                er.error_list.append(name)
+                if name not in er.error_list: er.error_list.append(name)
+                print(format_exc())                
             if success and name not in er.error_list:
                 print('ALL: ', cc.count)
                 print('CREATE: ', cc.count_create)

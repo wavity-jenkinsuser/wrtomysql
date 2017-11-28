@@ -78,7 +78,7 @@ def find_and_read_file():
             obj = name.split(sep='.')[1]
             print('Working on file /data/logs/{}'.format(name))
             try:
-                with open('/data/log/{}'.format(name, 'r', encoding="latin1")) as fileobject:
+                with open('/data/log/{}'.format(name), 'r', encoding="latin1") as fileobject:
                     for line in fileobject:
                         success = main(line, obj, c, cc)
             except:

@@ -12,14 +12,17 @@ pipeline {
                                         submoduleCfg: [], 
                                         userRemoteConfigs: [[credentialsId: '8a5ae250-42f8-482a-ba21-af74658e34c2', url: 'https://github.com/Energy1190/wrtomysql']]
                                        ])
-                    GPSC = scmCheckout.GIT_PREVIOUS_SUCCESSFUL_COMMIT
-                    echo "${GPSC}"
+                    env.GPSC = scmCheckout.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+                    echo "${env.GPSC}"
+                    sh 'echo ${env.GPSC}'
                 }
             }
         }
         stage('Test message') {
             steps {
                 script {
+                    echo "${env.GPSC}"
+                    sh 'echo ${env.GPSC}'
                     if (GIT_PREVIOUS_SUCCESSFUL_COMMIT) {
                         COMMITLIST = sh(returnStdout: true, script:'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD')
                         BADLIST = loop_with_preceding_sh(COMMITLIST)

@@ -4,21 +4,13 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                GIT = checkout([$class: 'GitSCM', 
-                branches: [[name: 'master']], 
-                doGenerateSubmoduleConfigurations: false, 
-                extensions: [], 
-                submoduleCfg: [], 
-                userRemoteConfigs: [[credentialsId: '8a5ae250-42f8-482a-ba21-af74658e34c2', url: 'https://github.com/Energy1190/wrtomysql']]
-                ])
-                sh 'echo ${GIT.GIT_PREVIOUS_SUCCESSFUL_COMMIT}'
+                GITINFO = checkout([$class: 'GitSCM', branches: [[name: 'master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '8a5ae250-42f8-482a-ba21-af74658e34c2', url: 'https://github.com/Energy1190/wrtomysql']]])
+                sh 'echo ${GITINFO.GIT_PREVIOUS_SUCCESSFUL_COMMIT}'
             }
         }
         stage('Test message') {
             steps {
                 script {
-                    GIT_PREVIOUS_SUCCESSFUL_COMMIT = sh(returnStdout: true, script:'echo ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}')
-                 
                     if (GIT_PREVIOUS_SUCCESSFUL_COMMIT) {
                         COMMITLIST = sh(returnStdout: true, script:'git rev-list ${GIT_PREVIOUS_SUCCESSFUL_COMMIT}^..HEAD')
                         BADLIST = loop_with_preceding_sh(COMMITLIST)

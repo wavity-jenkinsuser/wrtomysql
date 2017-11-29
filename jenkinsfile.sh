@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                GPSC = scmCheckout.GITINFO.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+                GPSC = scmCheckout.GIT_PREVIOUS_SUCCESSFUL_COMMIT
                 sh 'echo ${GPSC}'
             }
         }

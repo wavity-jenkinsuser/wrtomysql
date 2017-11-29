@@ -12,8 +12,8 @@ pipeline {
                                         submoduleCfg: [], 
                                         userRemoteConfigs: [[credentialsId: '8a5ae250-42f8-482a-ba21-af74658e34c2', url: 'https://github.com/Energy1190/wrtomysql']]
                                        ])
-                    def gpsc = scmCheckout.GIT_PREVIOUS_SUCCESSFUL_COMMIT
-                    sh 'echo ${gpsc}'
+                    GPSC = scmCheckout.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+                    sh 'echo ${GPSC}'
                 }
             }
         }

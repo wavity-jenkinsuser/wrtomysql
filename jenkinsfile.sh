@@ -4,7 +4,13 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                GITINFO = checkout([$class: 'GitSCM', branches: [[name: 'master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '8a5ae250-42f8-482a-ba21-af74658e34c2', url: 'https://github.com/Energy1190/wrtomysql']]])
+                GITINFO = checkout([$class: 'GitSCM', 
+                                    branches: [[name: 'master']], 
+                                    doGenerateSubmoduleConfigurations: false, 
+                                    extensions: [], 
+                                    submoduleCfg: [], 
+                                    userRemoteConfigs: [[credentialsId: '8a5ae250-42f8-482a-ba21-af74658e34c2', url: 'https://github.com/Energy1190/wrtomysql']]
+                                   ])
                 sh 'echo ${GITINFO.GIT_PREVIOUS_SUCCESSFUL_COMMIT}'
             }
         }

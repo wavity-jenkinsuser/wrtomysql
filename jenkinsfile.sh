@@ -13,8 +13,9 @@ pipeline {
                                         userRemoteConfigs: [[credentialsId: '8a5ae250-42f8-482a-ba21-af74658e34c2', url: 'https://github.com/Energy1190/wrtomysql']]
                                        ])
                     env.GPSC = scmCheckout.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+                    env.GB= scmCheckout.GIT_BRANCH
                     echo "${env.GPSC}"
-                    sh 'echo ${env.GPSC}'
+                    sh 'echo ${GPSC}'
                 }
             }
         }

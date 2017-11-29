@@ -16,6 +16,7 @@ pipeline {
                     env.GB= scmCheckout.GIT_BRANCH
                     echo "${env.GPSC}"
                     sh 'echo ${GPSC}'
+                    sh 'printenv'
                 }
             }
         }
@@ -30,6 +31,7 @@ pipeline {
                         BOOL = loop_bad_message(BADLIST)
                         if (BOOL) {
                             loop_mail_send(BADLIST)
+                    sh 'printenv'
                         }
                     }
                 }

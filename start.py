@@ -84,6 +84,7 @@ def find_and_read_file():
                             success = main(line, obj, c, cc)
                         except:
                             print ('Error in file /data/logs/{}'.format(name))
+                            print ('In line: ', line)
                             er.count_error += 1
                             if name not in er.error_list: er.error_list.append(name)
                             print(format_exc())
@@ -98,7 +99,8 @@ def find_and_read_file():
                 print('INSERT: ', cc.count_insert)
                 print('ALTER: ', cc.count_alter)
                 print('Success. Remove /data/logs/{}'.format(name))
-                # os.remove('/data/log/{}'.format(name))
+                os.remove('/data/log/{}'.format(name))
+                return True
     if er.count_error:
         print('ERROR: ', er.count_error)
         print('ERROR IN: ', ', '.join(er.error_list))
